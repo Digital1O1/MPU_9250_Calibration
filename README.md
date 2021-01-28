@@ -51,4 +51,4 @@ As of 1/27/2021, the magometer calibration has yet to be added, but will be in t
 
 To calibrate the acceleromotor, the MPU 9250 has to be stationary on six different 'faces', kinda like placing a dice on each face.
 
-![image](https://user-images.githubusercontent.com/39348633/106089503-acf22c80-60ed-11eb-85ac-bd43b0fef243.png)
+![image](https://user-images.githubusercontent.com/39348633/106155224-0d14bd00-6146-11eb-8ebd-6f9f6a96cf07.png)
