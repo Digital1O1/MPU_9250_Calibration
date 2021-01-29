@@ -2,31 +2,64 @@
 #include <Wire.h>
 #include <MPU9250.h>
 int status;
-float axb, ayb, azb, axs, ays, azs,
-      ax, ay, az, gx, gy, gz,
-      gxb, gyb, gzb = 0;
+float axb, ayb, azb, axs, ays, azs, ax, ay, az, gx, gy, gz,
+    gxb, gyb, gzb, hxb, hyb, hzb, set_gxb, set_gyb, set_gzb,
+    hxs, hys, hzs, mx, my, mz = 0;
+
+// Declare SPI object and CS pin here
 MPU9250 IMU(SPI, 10);
 
 //---------------------------------------------------- [ DISPLAY FUNCTIONS ] ----------------------------------------------------//
 
 void display_values_table()
 {
-  Serial.println("--------------- ACCELEROMOTOR DATA --------           --------------- GYROSCOPE DATA ---------------");
-  Serial.print("aX : "); Serial.print(ax); Serial.print(' ');
-  Serial.print("\taY : "); Serial.print(ay); Serial.print(' ');
-  Serial.print("\taZ : "); Serial.print(az);
-  Serial.print("\t\tgX : "); Serial.print(gx); Serial.print(' ');
-  Serial.print("\tgY : "); Serial.print(gy); Serial.print(' ');
-  Serial.print("\tgZ : "); Serial.println(gz);
+  Serial.println("--------------- ACCELEROMOTOR DATA --------           --------------- GYROSCOPE DATA ---------------           --------------- MAGOMETER DATA ---------------");
+  Serial.print("aX : ");
+  Serial.print(ax);
+  Serial.print(' ');
+  Serial.print("\taY : ");
+  Serial.print(ay);
+  Serial.print(' ');
+  Serial.print("\taZ : ");
+  Serial.print(az);
+
+  Serial.print("\t\tgX : ");
+  Serial.print(gx);
+  Serial.print(' ');
+  Serial.print("\tgY : ");
+  Serial.print(gy);
+  Serial.print(' ');
+  Serial.print("\tgZ : ");
+  Serial.print(gz);
+
+  Serial.print("\t\tmX : ");
+  Serial.print(mx);
+  Serial.print(' ');
+  Serial.print("\tmY : ");
+  Serial.print(my);
+  Serial.print(' ');
+  Serial.print("\tmZ : ");
+  Serial.println(mz);
 }
 void display_values_serial()
 {
-  Serial.print(ax); Serial.print(',');
-  Serial.print(ay); Serial.print(',');
-  Serial.print(az); Serial.print(',');
-  Serial.print(gx); Serial.print(',');
-  Serial.print(gy); Serial.print(',');
-  Serial.println(gz);
+  Serial.print(ax);
+  Serial.print(',');
+  Serial.print(ay);
+  Serial.print(',');
+  Serial.print(az);
+  Serial.print(',');
+  Serial.print(gx);
+  Serial.print(',');
+  Serial.print(gy);
+  Serial.print(',');
+  Serial.print(gz);
+  Serial.print(',');
+  Serial.print(mx);
+  Serial.print(',');
+  Serial.print(my);
+  Serial.print(',');
+  Serial.println(mz);
 }
 void setup()
 {
@@ -42,7 +75,9 @@ void setup()
     Serial.println("Check IMU wiring or try cycling power");
     Serial.print("Status: ");
     Serial.println(status);
-    while (1) {}
+    while (1)
+    {
+    }
   }
   else
   {
@@ -53,6 +88,9 @@ void setup()
   //---------------------------------------------------- [ CALIBRATE ACCELEROMOTOR ] ----------------------------------------------------//
   Serial.println("========================================================================================================================");
   Serial.println("\n-------------[ CALIBRATING ACCELEROMOTOR ]-------------\n");
+  delay(1200);
+  Serial.println("Orientate IMU to desiered INITAL position to calibrate all SIX axes\n");
+  delay(1200);
   Serial.println("To initiate ACCELEROMOTOR calibration press [ ENTER ]...");
 
   // Calibration won't start until user inputs 'ENTER' in the serial monitor
@@ -64,7 +102,7 @@ void setup()
       // If user presses 'ENTER' break out of while loop
       if (Serial.read() == '\n')
       {
-        Serial.println("\n\nCALIBRATION IN PROGRESS");
+        Serial.println("\nCALIBRATION STARTING IN...");
         break;
       }
     }
@@ -72,13 +110,13 @@ void setup()
     delay(1000);
   }
   delay(1200);
-  Serial.println("\nOrientate IMU to desiered INITAL position to calibrate all SIX axes");
 
   // This is where the actual calibration takes place. Orientate the IMU sensor in SIX different directions AND MAKE SURE IT'S STABLE
   for (int n = 1; n <= 6; n++)
   {
-    Serial.print("\nNumber of calibration iterations : ");
-    Serial.print(n); Serial.println(" \\ 6\n");
+    Serial.print("\nCurrent calibration iteration(s) : ");
+    Serial.print(n);
+    Serial.println(" \\ 6\n");
 
     // Countdown timer
     for (int i = 5; i > 0; i--)
@@ -110,15 +148,21 @@ void setup()
   // Display scale/bias values
   Serial.println("\n-------------[ SCALE FACTORS ]-------------\n");
 
-  Serial.print("X_Scale Factor : "); Serial.print(axs);
-  Serial.print(" Y_Scale Factor : "); Serial.print(ays);
-  Serial.print(" Z_Scale Factor : "); Serial.println(azs);
+  Serial.print("X_Scale Factor : ");
+  Serial.print(axs);
+  Serial.print(" Y_Scale Factor : ");
+  Serial.print(ays);
+  Serial.print(" Z_Scale Factor : ");
+  Serial.println(azs);
 
   Serial.println("\n-------------[ BIAS VALUES]-------------\n");
 
-  Serial.print("X_Biased : "); Serial.print(axb);
-  Serial.print(" Y_Biased : "); Serial.print(ayb);
-  Serial.print(" Z_Biased : "); Serial.println(azb);
+  Serial.print("X_Biased : ");
+  Serial.print(axb);
+  Serial.print(" Y_Biased : ");
+  Serial.print(ayb);
+  Serial.print(" Z_Biased : ");
+  Serial.println(azb);
 
   // Store scale/bias values into an array
   const float accelBias[3] = {axb, ayb, azb};
@@ -131,9 +175,18 @@ void setup()
   IMU.setAccelCalZ(accelBias[2], accelFactor[2]);
 
   // Display
-  Serial.print("Ax_Bias : "); Serial.print(accelBias[0]);  Serial.print(" | Ax_Accel : "); Serial.println(accelFactor[0]);
-  Serial.print("Ay_Bias : "); Serial.print(accelBias[1]);  Serial.print(" | Ay_Accel : "); Serial.println(accelFactor[1]);
-  Serial.print("Az_Bias : "); Serial.print(accelBias[2]);  Serial.print(" | Az_Accel : "); Serial.println(accelFactor[2]);
+  Serial.print("Ax_Bias : ");
+  Serial.print(accelBias[0]);
+  Serial.print(" | Ax_Accel : ");
+  Serial.println(accelFactor[0]);
+  Serial.print("Ay_Bias : ");
+  Serial.print(accelBias[1]);
+  Serial.print(" | Ay_Accel : ");
+  Serial.println(accelFactor[1]);
+  Serial.print("Az_Bias : ");
+  Serial.print(accelBias[2]);
+  Serial.print(" | Az_Accel : ");
+  Serial.println(accelFactor[2]);
   delay(3000);
 
   Serial.println("\n========================================================================================================================");
@@ -155,14 +208,14 @@ void setup()
         Serial.println("\n\nPlace IMU sensor on solid surface and DON'T TOUCH IT");
         delay(2000);
 
-        Serial.println("\nCALIBRATION IN PROGRESS\n");
+        Serial.println("\nCALIBRATION STARTING IN...\n");
         break;
       }
     }
     Serial.print(".");
     delay(1000);
   }
-  
+
   // Countdown timer
   for (int i = 5; i > 0; i--)
   {
@@ -188,11 +241,102 @@ void setup()
 
     // Print out bias values
     Serial.println("---- GYRO BIAS VALUES SET ----\n");
-    Serial.print("GXB : "); Serial.print(gxb); Serial.print(',');
-    Serial.print(" GYB : "); Serial.print(gyb); Serial.print(',');
-    Serial.print(" GZB : "); Serial.println(gzb);
+    Serial.print("GXB : ");
+    Serial.print(gxb);
+    Serial.print(',');
+    Serial.print(" GYB : ");
+    Serial.print(gyb);
+    Serial.print(',');
+    Serial.print(" GZB : ");
+    Serial.println(gzb);
   }
 
+  //---------------------------------------------------- [ CALIBRATE MAGNETOMETER ] ----------------------------------------------------//
+  Serial.println("\nPress [ ENTER ] to calibrate megnetometer...");
+
+  // Calibration won't start until user inputs 'ENTER' in the serial monitor
+  while (true)
+  {
+    // Checks serial monitor for incoming data
+    if (Serial.available() > 0)
+    {
+      // If user presses 'ENTER' break out of while loop
+      if (Serial.read() == '\n')
+      {
+        Serial.println("\n-------------[ CALIBRATING MAGNETOMETER WILL TAKE ~60-80 SECONDS TO COMPLETE...]-------------");
+        delay(1500);
+        Serial.println("\n-------------[ SLOWLY AND CONTINUOUSLY MAKE A FIGURE 8 MOTION DURING CALIBRATION ]-------------");
+        delay(2000);
+
+        Serial.println("\nCALIBRATION STARTING IN...\n");
+        break;
+      }
+    }
+    Serial.print(".");
+    delay(1000);
+  }
+
+  // Countdown timer
+  for (int i = 5; i > 0; i--)
+  {
+    Serial.print(i);
+    Serial.println("...");
+    delay(1000);
+  }
+
+  if (IMU.calibrateMag() == true)
+  {
+    // Gather magnetometer bias/scale factors
+    hxb = IMU.getMagBiasX_uT();
+    hyb = IMU.getMagBiasY_uT();
+    hzb = IMU.getMagBiasZ_uT();
+    hxs = IMU.getMagScaleFactorX();
+    hys = IMU.getMagScaleFactorY();
+    hzs = IMU.getMagScaleFactorZ();
+
+    // Display bias/scale factors
+    Serial.println("\nCALIBRATION COMPLETE\n");
+    Serial.println("---- MAG BIAS VALUES ----\n");
+    Serial.print("X_Bias : ");
+    Serial.print(hxb);
+    Serial.print(',');
+    Serial.print(" Y_Bias : ");
+    Serial.print(hyb);
+    Serial.print(',');
+    Serial.print(" Z_Bias : ");
+    Serial.println(hzb);
+
+    Serial.println("\n---- MAG SCALE VALUES ----\n");
+    Serial.print("X_Scale : ");
+    Serial.print(hxs);
+    Serial.print(',');
+    Serial.print("Y_Scale : ");
+    Serial.print(hys);
+    Serial.print(',');
+    Serial.print("Z_Scale : ");
+    Serial.println(hzs);
+
+    // Set biased/scale factors
+    IMU.setMagCalX(hxb, hxs);
+    IMU.setMagCalY(hyb, hys);
+    IMU.setMagCalZ(hzb, hzs);
+    Serial.println("\n---- MAGNOMETER BIAS/SCALE FACTOR SET TO ----\n");
+
+    Serial.print("Mag X Bias : ");
+    Serial.print(hxb);
+    Serial.print("\tMag X Scale Factor : ");
+    Serial.println(hxs);
+    Serial.print("Mag Y Bias : ");
+    Serial.print(hyb);
+    Serial.print("\tMag Y Scale Factor : ");
+    Serial.println(hys);
+    Serial.print("Mag Z Bias : ");
+    Serial.print(hzb);
+    Serial.print("\tMag Z Scale Factor : ");
+    Serial.println(hzs);
+  }
+
+  //---------------------------------------------------- [ CALIBRATION STUFF DONE ] ----------------------------------------------------//
   Serial.println("\nPress [ ENTER ] to display IMU data...");
 
   // Calibration won't start until user inputs 'ENTER' in the serial monitor
@@ -210,10 +354,8 @@ void setup()
     Serial.print(".");
     delay(1000);
   }
-
   // Uncomment if you're exporting the IMU data to something like Excel
   //Serial.println("ax,ay,az,gx,gy,gz");
-
 }
 
 void loop()
@@ -226,8 +368,12 @@ void loop()
   gx = (IMU.getGyroX_rads());
   gy = (IMU.getGyroY_rads());
   gz = (IMU.getGyroZ_rads());
+  mx = IMU.getMagX_uT();
+  my = IMU.getMagY_uT();
+  mz = IMU.getMagZ_uT();
 
-  display_values_table();
+  // Display data
+  //display_values_table();
   display_values_serial();
   delay(100);
 }
