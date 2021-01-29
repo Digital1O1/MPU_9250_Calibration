@@ -10,7 +10,11 @@ Reference links :
 
 - [Proper usage of calibrateAccel() function](https://github.com/bolderflight/MPU9250/issues/80)
 
-PLEASE KEEP IN MIND...
+This repository has two versions of the same code for those who prefer using the Arduino IDE, and for those who prefer using Visual Code with the Platform IO extension.
+
+### [PLEASE KEEP IN MIND]
+
+-
 
 If you're using the Arduino IDE and the Teensy 4, you'll HAVE to decrease the clock speed by going to :
 
@@ -63,17 +67,25 @@ After serial communication is established, the function IMU.begin() should retur
 
 ![image](https://user-images.githubusercontent.com/39348633/106092802-aca95f80-60f4-11eb-85af-9a7cc119fbe6.png)
 
+---
+
 ### IMU.calibrateAccel();
 
 Calibrating the acceleromotor involves placing the sensor in six different stationary positions similar to placing a dice on it's different faces. After pressing ENTER a countdown will start and the user will be prompted when to change the IMU orientation and what calibration iteration they're on.
+
+---
 
 ### IMU.calibrateGyro();
 
 After calibrating all six sides, the user will be prompted again to press ENTER to initiate the gyroscopic calibration (which happens A LOT faster and is only done once).
 
+---
+
 ### IMU.calibrate
 
 During the magnetometer calibration, the MPU 9250 MUST be continiously and slowly moved in a figure 8 motion. Once enough data is collected, both the bias and scale factors for the magnetometer will then be applied. 
+
+---
 
 Pictured below is a high level diagram of what's going on while the program is running.
 
@@ -87,4 +99,27 @@ In the Basic_IMU_Ouput folder are two subfolders:
 
 The main purpose of these programs is to provide a quick way to check if your SPI wiring is correct.
 
-If so, you'll see the MPU 9250 data output to the serial monitor or the terminal you're using.
+# So...Did the calibration even worked?
+
+Looking at the output data alone, it's extremely hard to tell if the calibration worked or not.
+
+So to determine if it did or not, I :
+
+- Took the uncalibrated gyroscopic and acceleromotor data from Basic_IMU_Output_Arduino/Basic_IMU_Output_VS_Code
+
+- Took the MPU 9250 and make two circular motions in opposing directions.
+
+- Copy and pasted the values into a txt file
+
+- Imported the data from the txt to an Excel spreadsheet
+
+- Created a line graph with the data provided
+
+- Repeated the same steps with after calibrating the MPU 9250
+
+And the results were as followed
+
+![image](https://user-images.githubusercontent.com/39348633/106226431-cb6b2d00-61ac-11eb-98f6-b885822583b1.png)
+
+
+![image](https://user-images.githubusercontent.com/39348633/106226415-c312f200-61ac-11eb-85d7-123c00d71f0e.png)
