@@ -35,27 +35,24 @@ void setup()
 
 void loop()
 {
-  // read the sensor
   IMU.readSensor();
-  // display the data
-  Serial.print(IMU.getAccelX_mss(), 6);
-  Serial.print("\t");
-  Serial.print(IMU.getAccelY_mss(), 6);
-  Serial.print("\t");
-  Serial.print(IMU.getAccelZ_mss(), 6);
-  Serial.print("\t");
-  Serial.print(IMU.getGyroX_rads(), 6);
-  Serial.print("\t");
-  Serial.print(IMU.getGyroY_rads(), 6);
-  Serial.print("\t");
-  Serial.print(IMU.getGyroZ_rads(), 6);
-  Serial.print("\t");
-  Serial.print(IMU.getMagX_uT(), 6);
-  Serial.print("\t");
-  Serial.print(IMU.getMagY_uT(), 6);
-  Serial.print("\t");
-  Serial.print(IMU.getMagZ_uT(), 6);
-  Serial.print("\t");
-  Serial.println(IMU.getTemperature_C(), 6);
+  ax = (IMU.getAccelX_mss());
+  ay = (IMU.getAccelY_mss());
+  az = (IMU.getAccelZ_mss());
+  gx = (IMU.getGyroX_rads());
+  gy = (IMU.getGyroY_rads());
+  gz = (IMU.getGyroZ_rads());
+  mx = IMU.getMagX_uT();
+  my = IMU.getMagY_uT();
+  mz = IMU.getMagZ_uT();
+  Serial.print(ax); Serial.print(',');
+  Serial.print(ay); Serial.print(',');
+  Serial.print(az); Serial.print(',');
+  Serial.print(gx); Serial.print(',');
+  Serial.print(gy); Serial.print(',');
+  Serial.print(gz); Serial.print(',');
+  Serial.print(mx); Serial.print(',');
+  Serial.print(my); Serial.print(',');
+  Serial.println(mz);
   delay(100);
 }
