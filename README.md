@@ -1,4 +1,4 @@
-## Main Motivation
+# Main Motivation
 
 The purpose of this repo is to serve as a guideline of how to properly use the calibration functions in the  @bolderflight MPU9250 library.
 
@@ -10,9 +10,21 @@ Reference links :
 
 - [Proper usage of calibrateAccel() function](https://github.com/bolderflight/MPU9250/issues/80)
 
+PLEASE KEEP IN MIND...
+
+If you're using the Arduino IDE and the Teensy 4, you'll HAVE to decrease the clock speed by going to :
+
+- Tools --> CPU Speed --> 150 Mhz
+
+For some reason if you're using VS Code with the Platform IO extension, you'll HAVE to include the following in the platformio.ini file :
+
+- monitor_speed = 115200
+
+- board_build.f_cpu = 60000000L
+
 ---
 
-## Wire Hook Up
+# Wire Hook Up
 
 **KEEP IN MIND THE MPU9250 IS A 3.3V TOLERANT BREAKOUT BOARD**
 
@@ -43,22 +55,36 @@ The other pins such as the SCL,SDA,ADO can be attached to the same breadboard no
 
 ---
 
-## Overview of calibration program
+# Overview of calibration program
 
 A series of print statements are used throughout the program to notify the user where they are in the calibration process.
-
-### Establish serial communication and IMU.begin()
 
 After serial communication is established, the function IMU.begin() should return TRUE if nothing is wrong, which if that's the case, the serial monitor or terminal you're using will prompt the user to press ENTER to start calibrating the acceleromotor.
 
 ![image](https://user-images.githubusercontent.com/39348633/106092802-aca95f80-60f4-11eb-85af-9a7cc119fbe6.png)
 
-Calibrating the acceleromotor involves the sensor being placed stationary in six different positions much like placing a dice on it's different faces. After pressing ENTER a countdown will start and the user will be prompted when to change the IMU orientation and what calibration iteration they're on.
+### IMU.calibrateAccel();
+
+Calibrating the acceleromotor involves placing the sensor in six different stationary positions similar to placing a dice on it's different faces. After pressing ENTER a countdown will start and the user will be prompted when to change the IMU orientation and what calibration iteration they're on.
+
+### IMU.calibrateGyro();
 
 After calibrating all six sides, the user will be prompted again to press ENTER to initiate the gyroscopic calibration (which happens A LOT faster and is only done once).
 
-As of 1/27/2021, the magometer calibration has yet to be added, but will be in the near future
+### IMU.calibrate
 
-Pictured below is a high level diaghram of what's going on while the program is running.
+During the magnetometer calibration, the MPU 9250 MUST be continiously and slowly moved in a figure 8 motion. Once enough data is collected, both the bias and scale factors for the magnetometer will then be applied. 
 
-![image](https://user-images.githubusercontent.com/39348633/106155224-0d14bd00-6146-11eb-8ebd-6f9f6a96cf07.png)
+Pictured below is a high level diagram of what's going on while the program is running.
+
+![image](https://user-images.githubusercontent.com/39348633/106216711-60642b00-6199-11eb-8dcb-70a30699cc86.png)
+
+# Repository Folder Contents
+
+In the Basic_IMU_Ouput folder are two subfolders:
+- Basic_IMU_Output_Arduino
+- Basic_IMU_Output_Arduino_VS_Code
+
+The main purpose of these programs is to provide a quick way to check if your SPI wiring is correct.
+
+If so, you'll see the MPU 9250 data output to the serial monitor or the terminal you're using.
