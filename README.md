@@ -2,7 +2,7 @@
 
 The purpose of this repo is to serve as a guideline of how to properly use the calibration functions in the  @bolderflight MPU9250 library.
 
-Credit also rightfully goes to @GiovanniCmpaner for clarifying how to properly use the calibrateAccel() function and a reference link is provided where the discussion was brought up on how to use the calibrateAccel() function properly.
+Credit also rightfully goes to @GiovanniCmpaner for clarifying how to properly use the calibrateAccel() function. A reference link is provided where the discussion was brought up on how to use the calibrateAccel() function properly.
 
 Reference links :
 
@@ -14,9 +14,7 @@ This repository has two versions of the same code for those who prefer using the
 
 ### [PLEASE KEEP IN MIND]
 
--
-
-If you're using the Arduino IDE and the Teensy 4, you'll HAVE to decrease the clock speed by going to :
+If you're using the Arduino IDE and the Teensy 4, you'll have to DECREASE the clock speed by going to :
 
 - Tools --> CPU Speed --> 150 Mhz
 
@@ -49,9 +47,13 @@ The wiring table below was based on the pinout from a Teensy 4 board.
 
 The SPI communication protocol was used between the Teensy board and the MPU 9250.
 
-NCS is just a different way of notating that particular pin is the Chip Select (CS) pin.When it recieves a LOW signal from the Teensy, communication between the two devices is initialized and the IMU data is sent TO the Teensy board.
+NCS is just a different way of notating that particular pin on the MPU 9250 is the Chip Select (CS) pin. When the NCS/CS pin recieves a LOW signal from the Teensy, communication between the two devices is initialized and the IMU data is sent TO the Teensy board.
 
-If multiple MPU 9250's were to be used (Or any sensor that's using SPI) , the NCS/CS pins from each MPU 9250 would have to be 'attached' to a different digital pin on the Teensy.Specifying the digital pin to be used to send the LOW signal to the MPU 9250 is done through the SPI object declaration, which by "default" in this program is pin 10.
+If multiple MPU 9250's were to be used (Or any sensor that's using SPI in general) , the NCS/CS pins from each MPU 9250 would have to be 'attached' to a different digital pin on the Teensy.Specifying the digital pin to be used to send the LOW signal to the MPU 9250 is done through the SPI object declaration, which by "default" in this program is pin 10 as shown in the code snippet below.
+
+```c++
+MPU9250 IMU(SPI, 10);
+```
 
 The other pins such as the SCL,SDA,ADO can be attached to the same breadboard nodes with the other MPU 9250's
 
@@ -69,21 +71,33 @@ After serial communication is established, the function IMU.begin() should retur
 
 ---
 
+# Overview of calibration functions
+
 ### IMU.calibrateAccel();
 
-Calibrating the acceleromotor involves placing the sensor in six different stationary positions similar to placing a dice on it's different faces. After pressing ENTER a countdown will start and the user will be prompted when to change the IMU orientation and what calibration iteration they're on.
+Calibrating the acceleromotor involves placing the sensor in six different stationary positions similar when looking at the six different faces of a single dice.
+
+After pressing ENTER a countdown will start.
+
+Once the calibration for that iteration is done, the user will be prompted to change the sensor orientation and notified which iteration (out of 6) they're on.
+
+After all six iterations are done, the user will be prompted both the bias and scale factors which are then applied.
 
 ---
 
 ### IMU.calibrateGyro();
 
-After calibrating all six sides, the user will be prompted again to press ENTER to initiate the gyroscopic calibration (which happens A LOT faster and is only done once).
+The user will be prompted again to press ENTER to initiate the gyroscopic calibration (which happens A LOT faster and is only done once).
+
+Once the gyro calibratoin is done, both the gyro scale and bias factors will be applied to the sensor.
 
 ---
 
 ### IMU.calibrate();
 
-During the magnetometer calibration, the MPU 9250 MUST be continiously and slowly moved in a figure 8 motion. Once enough data is collected, both the bias and scale factors for the magnetometer will then be applied. 
+During the magnetometer calibration, the MPU 9250 MUST be continuously and slowly moved in a figure 8 motion. 
+
+Once enough data is collected, both the bias and scale factors for the magnetometer will then be applied. 
 
 ---
 
@@ -136,6 +150,6 @@ And the results were as followed.
 
 Judging by the generated Excel sheets along with my limited knowledge and experience with Internal Measurement Units (IMUs) like the MPU 9250, it's extremely hard to tell if the calibration is working or not.
 
-However, to reiterate my intention(s) with this repository, this is an attempt to provide a guide/framework for those who are using bolderflight's library and some sort of MPU/IMU sensor.
+But circling back to my original point of creating this repository was to provide a guide/framework for those who are using bolderflight's library and whatever IMU/MPU sensor the user has on hand.
 
-For those who have comments/suggestions/corrections, I would love to hear back from y'all as I'm still learning alot myself as I dive deeper into the Embedded engineering world as a dude who's academically trained as a Biomedical engineer.
+As a academically trained Biomedical engineer, for those who have comments/suggestions/corrections, I would love to hear back from y'all as I'm still learning alot myself as I dive deeper into the Embedded engineering world.
