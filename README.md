@@ -81,7 +81,7 @@ After calibrating all six sides, the user will be prompted again to press ENTER 
 
 ---
 
-### IMU.calibrate
+### IMU.calibrate();
 
 During the magnetometer calibration, the MPU 9250 MUST be continiously and slowly moved in a figure 8 motion. Once enough data is collected, both the bias and scale factors for the magnetometer will then be applied. 
 
@@ -105,21 +105,37 @@ Looking at the output data alone, it's extremely hard to tell if the calibration
 
 So to determine if it did or not, I :
 
-- Took the uncalibrated gyroscopic and acceleromotor data from Basic_IMU_Output_Arduino/Basic_IMU_Output_VS_Code
+- Uploaded either the Basic_IMU_Output_Arduino/Basic_IMU_Output_VS_Code to the Teensy.
 
-- Took the MPU 9250 and make two circular motions in opposing directions.
+- Took the MPU 9250 and made circular/figure 8 motions/movements as shown in the gif below.
 
-- Copy and pasted the values into a txt file
+![](IMU_Demo.gif)
+![](figure8.gif)
 
-- Imported the data from the txt to an Excel spreadsheet
+- Took the uncalibrated gryoscopic/acceleromotor/magnetometer data that was displayed on the serial monitor/terminal copy and pasted the values into a txt file.
 
-- Created a line graph with the data provided
+- Imported the data from the txt to an Excel spreadsheet.
 
-- Repeated the same steps with after calibrating the MPU 9250
+- Created a line graph with the data provided.
 
-And the results were as followed
+- Repeated the same steps with after calibrating the MPU 9250.
 
-![image](https://user-images.githubusercontent.com/39348633/106226431-cb6b2d00-61ac-11eb-98f6-b885822583b1.png)
+And the results were as followed.
 
+![image](https://user-images.githubusercontent.com/39348633/106338798-581ff480-625a-11eb-9332-00ea4a303028.png)
 
-![image](https://user-images.githubusercontent.com/39348633/106226415-c312f200-61ac-11eb-85d7-123c00d71f0e.png)
+![image](https://user-images.githubusercontent.com/39348633/106338806-5d7d3f00-625a-11eb-9d8b-80703babe251.png)
+
+![image](https://user-images.githubusercontent.com/39348633/106337914-1ee68500-6258-11eb-97b2-d42a825d9254.png)
+
+![image](https://user-images.githubusercontent.com/39348633/106337963-3de51700-6258-11eb-99f5-680a72526e53.png)
+
+---
+
+# Conclusion
+
+Judging by the generated Excel sheets along with my limited knowledge and experience with Internal Measurement Units (IMUs) like the MPU 9250, it's extremely hard to tell if the calibration is working or not.
+
+However, to reiterate my intention(s) with this repository, this is an attempt to provide a guide/framework for those who are using bolderflight's library and some sort of MPU/IMU sensor.
+
+For those who have comments/suggestions/corrections, I would love to hear back from y'all as I'm still learning alot myself as I dive deeper into the Embedded engineering world as a dude who's academically trained as a Biomedical engineer.
