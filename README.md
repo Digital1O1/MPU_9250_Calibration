@@ -47,9 +47,13 @@ The wiring table below was based on the pinout from a Teensy 4 board.
 
 The SPI communication protocol was used between the Teensy board and the MPU 9250.
 
-NCS is just a different way of notating that particular pin on the MPU 9250 is the Chip Select (CS) pin. When the NCS/CS pin recieves a LOW signal from the Teensy, communication between the two devices is initialized and the IMU data is sent TO the Teensy board.
+NCS is just a different way of notating that particular pin on the MPU 9250 is the Chip Select (CS) pin. 
 
-If multiple MPU 9250's were to be used (Or any sensor that's using SPI in general) , the NCS/CS pins from each MPU 9250 would have to be 'attached' to a different digital pin on the Teensy.Specifying the digital pin to be used to send the LOW signal to the MPU 9250 is done through the SPI object declaration, which by "default" in this program is pin 10 as shown in the code snippet below.
+When the NCS/CS pin recieves a LOW signal from the Teensy, communication between the two devices is initialized and the IMU data is sent TO the Teensy board.
+
+If multiple MPU 9250's were to be used (Or any sensor that's using SPI in general), the NCS/CS pins from each MPU 9250 would have to be 'attached' to a different digital pin on the Teensy.
+
+Specifying the digital pin to be used to send the LOW signal to the MPU 9250 is done through the SPI object declaration, which by "default" in this program is pin 10 as shown in the code snippet below.
 
 ```c++
 MPU9250 IMU(SPI, 10);
