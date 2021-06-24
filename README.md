@@ -6,7 +6,7 @@ Credit also rightfully goes to @GiovanniCmpaner for clarifying how to properly u
 
 Reference links :
 
-- [MPU9250 library](https://github.com/bolderflight/MPU9250)
+- [MPU9250 library](https://github.com/Digital1O1/MPU9250)
 
 - [Proper usage of calibrateAccel() function](https://github.com/bolderflight/MPU9250/issues/80)
 
