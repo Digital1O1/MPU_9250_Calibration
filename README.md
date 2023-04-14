@@ -32,18 +32,18 @@ For some reason if you're using VS Code with the Platform IO extension, you'll H
 
 The wiring table below was based on the pinout from a Teensy 4 board. 
 
-| MPU Breakout Board Pin | Teensy Pin |
-| :-------------: | :-------------:|
-| VCC | 3.3 V|
-| GND | GND |
-| SCL | 13  | 
-| SDA | 11  | 
-| EDA | N/A |
-| ECL | N/A | 
-| ADO | 12  |
-| INT | GND |
-| NCS (CS) | 10  |
-| FSYNC | GND |
+| MPU Breakout Board Pin | Teensy Pin | Function | 
+| :-------------: | :-------------:|:-------------:|
+| VCC | 3.3 V| Power
+| GND | GND | Common Ground
+| SCL/SCLK | 13  | I2C Serial Clock / SPI Serial Clock Pn
+| SDA/SDI | 11  | I2C Serial Data / SPI Serial Data Pn
+| EDA | N/A | I2C Serial Data Input
+| ECL | N/A | I2C Master Serial Clock
+| ADO/SDO | 12  | I2C Address / Serial Data Out Pin
+| INT | GND | Interrupt Pin
+| NCS (CS) | 10  | Chip Selection Pin
+| FSYNC | GND | Frame Synchronisation Input Pin
 
 The SPI communication protocol was used between the Teensy board and the MPU 9250.
 
