@@ -36,8 +36,8 @@ The wiring table below was based on the pinout from a Teensy 4 board.
 | :-------------: | :-------------:|:-------------:|
 | VCC | 3.3 V| Power
 | GND | GND | Common Ground
-| SCL/SCLK | 13  | I2C Serial Clock / SPI Serial Clock Pn
-| SDA/SDI | 11  | I2C Serial Data / SPI Serial Data Pn
+| SCL/SCLK | 13  | I2C Serial Clock / SPI Serial Clock Pin
+| SDA/SDI | 11  | I2C Serial Data / SPI Serial Data Pin
 | EDA | N/A | I2C Serial Data Input
 | ECL | N/A | I2C Master Serial Clock
 | ADO/SDO | 12  | I2C Address / Serial Data Out Pin
